@@ -34,7 +34,8 @@
             btnMezclaDirecta = new Button();
             btnIngresar = new Button();
             txtInput = new TextBox();
-            label1 = new Label();
+            lblNumbers = new Label();
+            btnClearList = new Button();
             SuspendLayout();
             // 
             // listViewSteps
@@ -43,14 +44,14 @@
             listViewSteps.GridLines = true;
             listViewSteps.Location = new Point(346, 12);
             listViewSteps.Name = "listViewSteps";
-            listViewSteps.Size = new Size(657, 321);
+            listViewSteps.Size = new Size(323, 426);
             listViewSteps.TabIndex = 0;
             listViewSteps.UseCompatibleStateImageBehavior = false;
             listViewSteps.View = View.Details;
             // 
             // btnMergeSort
             // 
-            btnMergeSort.Location = new Point(242, 83);
+            btnMergeSort.Location = new Point(232, 62);
             btnMergeSort.Name = "btnMergeSort";
             btnMergeSort.Size = new Size(75, 23);
             btnMergeSort.TabIndex = 1;
@@ -60,27 +61,27 @@
             // 
             // btnMezclaNatural
             // 
-            btnMezclaNatural.Location = new Point(242, 163);
+            btnMezclaNatural.Location = new Point(232, 124);
             btnMezclaNatural.Name = "btnMezclaNatural";
             btnMezclaNatural.Size = new Size(75, 23);
             btnMezclaNatural.TabIndex = 2;
             btnMezclaNatural.Text = "Natural";
             btnMezclaNatural.UseVisualStyleBackColor = true;
-            btnMezclaNatural.Click += btnMezclaNatural_Click;
+            btnMezclaNatural.Click += btnNaturalMerge_Click;
             // 
             // btnMezclaDirecta
             // 
-            btnMezclaDirecta.Location = new Point(242, 122);
+            btnMezclaDirecta.Location = new Point(232, 91);
             btnMezclaDirecta.Name = "btnMezclaDirecta";
             btnMezclaDirecta.Size = new Size(75, 23);
             btnMezclaDirecta.TabIndex = 3;
             btnMezclaDirecta.Text = "Directa";
             btnMezclaDirecta.UseVisualStyleBackColor = true;
-            btnMezclaDirecta.Click += btnMezclaDirecta_Click;
+            btnMezclaDirecta.Click += btnDirectMerge_Click;
             // 
             // btnIngresar
             // 
-            btnIngresar.Location = new Point(242, 33);
+            btnIngresar.Location = new Point(232, 30);
             btnIngresar.Name = "btnIngresar";
             btnIngresar.Size = new Size(75, 23);
             btnIngresar.TabIndex = 4;
@@ -92,24 +93,35 @@
             // 
             txtInput.Location = new Point(68, 30);
             txtInput.Name = "txtInput";
-            txtInput.Size = new Size(168, 23);
+            txtInput.Size = new Size(151, 23);
             txtInput.TabIndex = 5;
             // 
-            // label1
+            // lblNumbers
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(12, 33);
-            label1.Name = "label1";
-            label1.Size = new Size(38, 15);
-            label1.TabIndex = 6;
-            label1.Text = "label1";
+            lblNumbers.AutoSize = true;
+            lblNumbers.Location = new Point(11, 34);
+            lblNumbers.Name = "lblNumbers";
+            lblNumbers.Size = new Size(56, 15);
+            lblNumbers.TabIndex = 6;
+            lblNumbers.Text = "Numbers";
+            // 
+            // btnClearList
+            // 
+            btnClearList.Location = new Point(232, 169);
+            btnClearList.Name = "btnClearList";
+            btnClearList.Size = new Size(75, 23);
+            btnClearList.TabIndex = 7;
+            btnClearList.Text = "Clear list";
+            btnClearList.UseVisualStyleBackColor = true;
+            btnClearList.Click += btnClearList_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1242, 450);
-            Controls.Add(label1);
+            Controls.Add(btnClearList);
+            Controls.Add(lblNumbers);
             Controls.Add(txtInput);
             Controls.Add(btnIngresar);
             Controls.Add(btnMezclaDirecta);
@@ -130,6 +142,7 @@
         private Button btnMezclaDirecta;
         private Button btnIngresar;
         private TextBox txtInput;
-        private Label label1;
+        private Label lblNumbers;
+        private Button btnClearList;
     }
 }

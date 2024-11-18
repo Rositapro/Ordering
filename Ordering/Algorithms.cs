@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Ordering
 {
@@ -14,148 +15,122 @@ namespace Ordering
             if (left < right)
             {
                 int middle = (left + right) / 2;
+                displayCallback(array[left..(right + 1)], "División: " + left + " - " + right);
+              
                 MergeSort(array, left, middle, displayCallback);
                 MergeSort(array, middle + 1, right, displayCallback);
                 Merge(array, left, middle, right, displayCallback);
             }
+
         }
 
         private static void Merge(int[] array, int left, int middle, int right, Action<int[], string> displayCallback)
         {
+            // Creamos copias de las mitades izquierda y derecha del arreglo
             int[] leftArray = array[left..(middle + 1)];
             int[] rightArray = array[(middle + 1)..(right + 1)];
+            // Inicializamos índices para recorrer cada arreglo y el arreglo original:
             int i = 0, j = 0, k = left;
-
+            // Mientras haya elementos por comparar en ambos arreglos:
             while (i < leftArray.Length && j < rightArray.Length)
-            {
-                if (leftArray[i] <= rightArray[j])
-                {
-                    array[k++] = leftArray[i++];
-                }
-                else
-                {
-                    array[k++] = rightArray[j++];
-                }
-                displayCallback(array, "Merge paso a paso");
-            }
-
+                // Copiamos el elemento más pequeño al arreglo original:
+                array[k++] = leftArray[i] <= rightArray[j] ? leftArray[i++] : rightArray[j++];
+            //           // Copiamos los elementos restantes del arreglo izquierdo (si los hay):
             while (i < leftArray.Length)
-            {
                 array[k++] = leftArray[i++];
-                displayCallback(array, "Merge paso a paso");
-            }
-
             while (j < rightArray.Length)
-            {
                 array[k++] = rightArray[j++];
-                displayCallback(array, "Merge paso a paso");
-            }
+
+            displayCallback(array, "Merge paso completado");
         }
 
-        public static void MezclaDirecta(int[] array, Action<int[], string> displayCallback)
+        public static void DirectMerge(int[] array, Action<int[], string> displayCallback)
         {
-            int n = array.Length;
-            int[] temp = new int[n];
+            int n = array.Length;// Obtener el tamaño del arreglo
+            int[] temp = new int[n]; // Crear un arreglo temporal del mismo tamaño
+            // Iterar sobre diferentes tamaños de subarreglos (width)
             for (int width = 1; width < n; width *= 2)
             {
+                displayCallback(array.ToArray(), "División con width = " + width);
+                // Iterar sobre los subarreglos de tamaño 2*width
                 for (int i = 0; i < n; i += 2 * width)
                 {
-                    int left = i;
-                    int middle = Math.Min(i + width, n);
-                    int right = Math.Min(i + 2 * width, n);
+                    int left = i; // Índice inicial del subarreglo izquierdo
+                    int middle = Math.Min(i + width, n); // Índice del último elemento del subarreglo izquierdo
+                    int right = Math.Min(i + 2 * width, n);// Índice del último elemento del subarreglo derecho
 
+                    // Fusionar los subarreglos izquierdo y derecho en el arreglo temporal
                     int l = left, r = middle, k = left;
 
+                    //se ejecuta mientras ambos sub - arreglos tienen elementos por mezclar.
                     while (l < middle && r < right)
-                    {
-                        if (array[l] <= array[r])
-                        {
-                            temp[k++] = array[l++];
-                        }
-                        else
-                        {
-                            temp[k++] = array[r++];
-                        }
-                        displayCallback(temp, "Mezcla Directa paso a paso");
-                    }
-
+                        temp[k++] = array[l] <= array[r] ? array[l++] : array[r++];
+                    // Copiar los elementos restantes de los subarreglos (si los hay
                     while (l < middle)
-                    {
                         temp[k++] = array[l++];
-                        displayCallback(temp, "Mezcla Directa paso a paso");
-                    }
-
                     while (r < right)
-                    {
                         temp[k++] = array[r++];
-                        displayCallback(temp, "Mezcla Directa paso a paso");
-                    }
                 }
+                // Copiar el arreglo temporal de vuelta al arreglo original
                 Array.Copy(temp, array, n);
+                displayCallback(array.ToArray(), "Mezcla después de width = " + width);
             }
         }
 
-        public static void MezclaNatural(int[] array, Action<int[], string> displayCallback)
+        public static void NaturalMerge(int[] array, Action<int[], string> displayCallback)
         {
+
             bool ordenado = false;
             int[] temp = new int[array.Length];
-
+            //El ciclo while se ejecuta mientras ordenado sea false.
             while (!ordenado)
             {
                 ordenado = true;
-                int i = 0, k = 0;
+                int i = 0;
+                // Mostrar el arreglo antes de iniciar el ciclo de mezcla
+                displayCallback(array, "División en sub-secuencias");
 
                 while (i < array.Length)
                 {
                     int start = i;
+
+                    // Encuentra el final de la primera secuencia ordenada
                     while (i < array.Length - 1 && array[i] <= array[i + 1])
                         i++;
                     i++;
 
                     int j = i;
+
+                    // Encuentra el final de la segunda secuencia ordenada
                     while (i < array.Length - 1 && array[i] <= array[i + 1])
                         i++;
                     i++;
 
-                    MergeNatural(array, start, j, i, temp, displayCallback);
-
-                    if (i < array.Length)
+                    // Mezcla las sub-secuencias en el arreglo temporal
+                    if (j < array.Length)
+                    {
+                        MergeNatural(array, start, j, Math.Min(i, array.Length), temp);
                         ordenado = false;
+                    }
                 }
 
-                Array.Copy(temp, array, array.Length);
-                displayCallback(array, "Mezcla Natural paso a paso");
+                // Copia el arreglo temporal de vuelta al arreglo original
+                Array.Copy(temp, 0, array, 0, array.Length);
+
+                // Muestra el estado del arreglo después de cada ciclo de mezcla
+                displayCallback(array, "Mezcla completa");
             }
         }
 
-        private static void MergeNatural(int[] array, int left, int middle, int right, int[] temp, Action<int[], string> displayCallback)
+        // Método MergeNatural sin el callback interno
+        private static void MergeNatural(int[] array, int left, int middle, int right, int[] temp)
         {
             int i = left, j = middle, k = left;
-
             while (i < middle && j < right)
-            {
-                if (array[i] <= array[j])
-                {
-                    temp[k++] = array[i++];
-                }
-                else
-                {
-                    temp[k++] = array[j++];
-                }
-                displayCallback(temp, "Mezcla Natural paso a paso");
-            }
+                temp[k++] = array[i] <= array[j] ? array[i++] : array[j++];
 
-            while (i < middle)
-            {
-                temp[k++] = array[i++];
-                displayCallback(temp, "Mezcla Natural paso a paso");
-            }
-
-            while (j < right)
-            {
-                temp[k++] = array[j++];
-                displayCallback(temp, "Mezcla Natural paso a paso");
-            }
+            while (i < middle) temp[k++] = array[i++];
+            while (j < right) temp[k++] = array[j++];
         }
     }
 }
