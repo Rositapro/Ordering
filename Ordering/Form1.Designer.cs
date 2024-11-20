@@ -36,6 +36,7 @@
             txtInput = new TextBox();
             lblNumbers = new Label();
             btnClearList = new Button();
+            cmbOrderType = new ComboBox();
             SuspendLayout();
             // 
             // listViewSteps
@@ -115,11 +116,20 @@
             btnClearList.UseVisualStyleBackColor = true;
             btnClearList.Click += btnClearList_Click;
             // 
+            // cmbOrderType
+            // 
+            cmbOrderType.FormattingEnabled = true;
+            cmbOrderType.Location = new Point(177, 247);
+            cmbOrderType.Name = "cmbOrderType";
+            cmbOrderType.Size = new Size(121, 23);
+            cmbOrderType.TabIndex = 8;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1242, 450);
+            Controls.Add(cmbOrderType);
             Controls.Add(btnClearList);
             Controls.Add(lblNumbers);
             Controls.Add(txtInput);
@@ -144,5 +154,6 @@
         private TextBox txtInput;
         private Label lblNumbers;
         private Button btnClearList;
+        private ComboBox cmbOrderType;
     }
 }
